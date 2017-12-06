@@ -1,10 +1,7 @@
 import numpy as np
-from constants import *
-from thermo import esat
+from .constants import *
+from .thermo import esat
 
-from pylab import *
-
-Nc_0    = 70e6     # Fixed cloud droplet number
 K_t     = 2.5e-2   # conductivity of heat [J/(sKm)]
 D_v     = 3.e-5    # diffusivity of water vapor [m2/s]
 rho_w   = 1.e3     # Density water
@@ -21,10 +18,10 @@ def calc_mur(Dr):
     return 10. * (1. + np.tanh(1200 * (Dr - 0.0014))) # SS08
 
 def calc_drop_properties(qr, nr, rho):
-    nr_lim = max(nr, 1) # Lower limit of one drop (because qr>0, we should have one drop...)
-    xr     = rho * qr / nr_lim             # Mean mass of prec. drops (kg)
-    xr     = min(max(xr, 1e-16), xr_max)   # Limit mass
-    Dr     = pow(xr / pirhow, 1./3.)       # Mean diameter of prec. drops (m)
+    #nr_lim = np.maximum(nr, 1)                          # Lower limit of one drop (because qr>0, we should have one drop...)
+    xr     = rho * qr / (nr+1e-12)                       # Mean mass of prec. drops (kg)
+    xr     = np.minimum(np.maximum(xr, 1e-16), xr_max)   # Limit mass
+    Dr     = (xr / pirhow)**(1./3.)                      # Mean diameter of prec. drops (m)
 
     return (xr,Dr)
 
@@ -41,6 +38,7 @@ def minmod(a,b):
 class Micro:
     def __init__(self):
         self.max_cfl = 1e-3
+        self.nccn    = 70e6
 
         self.sw_auto = True
         self.sw_evap = True
@@ -65,7 +63,7 @@ class Micro:
 
             for k in range(kstart, kend):
                 if(ql[k] > ql_min):
-                    xc           = rho[k] * ql[k] / Nc_0                # Mean mass of cloud drops
+                    xc           = rho[k] * ql[k] / self.nccn           # Mean mass of cloud drops
                     tau          = max(0, 1 - ql[k] / (ql[k] + qr[k]))  # SB06, Eq 5
                     phi_au       = 400 * pow(tau, 0.7) * \
                                    pow(1. - pow(tau, 0.7), 3)           # SB06, Eq 6
@@ -94,20 +92,19 @@ class Micro:
             Nsc    = 0.71       # SB06, p63
 
             for k in range(kstart, kend):
-                if(qr[k] > qr_min): 
+                if(qr[k] > qr_min):
                     xr, Dr = calc_drop_properties(qr[k], nr[k], rho[k])
 
                     G      = 1. / ( (Rv * T[k] / (D_v * esat(T[k]))) + (Lv * Lv / (K_t * Rv * T[k] * T[k])) )
                     S      = (qt[k] - ql[k]) / qs[k] - 1 # Supersaturation (-)
 
                     # Ventilation:
-                    Vr     = a - b * np.exp(-c * Dr)     # Terminal velocity drop of diamter Dr [m s-1]
-                    Nre    = Vr * Dr / nu_a          
-                    F0     = a_vent + b_vent * 0.71**(1./3.) * Nre**(1/2) 
-
+                    #Vr     = a - b * np.exp(-c * Dr)     # Terminal velocity drop of diamter Dr [m s-1]
+                    #Nre    = max(0, Vr * Dr / nu_a)          
+                    #F0     = a_vent + b_vent * 0.71**(1./3.) * Nre**(1/2) 
                     F      = 1. #F0
 
-                    qr_t   = 2. * pi * Dr * G * S * F * nr[k] / rho[k]
+                    qr_t   = 2. * np.pi * Dr * G * S * F * nr[k] / rho[k]
                     nr_t   = lambda_evap * qr_t * rho[k] / xr
 
                     # Accumulate tendencies
@@ -115,7 +112,6 @@ class Micro:
                     nr_tend[k]  += nr_t
                     thl_tend[k] += Lv / (cp * exner[k]) * qr_t 
                     qt_tend[k]  -= qr_t
-
 
     def accretion(self, qr_tend, nr_tend, thl_tend, qt_tend, qr, nr, ql, rho, exner, kstart, kend):
         if(self.sw_accr):
@@ -229,8 +225,8 @@ class Micro:
                     cc  = min(1., c_qr[kk] - zz * dzi[kk])
 
                 lim = rho[k] * dz[k] * qr[k] - qr_flux[k+1] * dt + small
-                if(lim < tot):
-                    print('limiter qr!!')
+                #if(lim < tot):
+                #    print('limiter qr!!')
                 tot = min(tot, lim)
                 qr_flux[k] = -tot / dt 
 
@@ -245,8 +241,8 @@ class Micro:
                     cc  = min(1., c_nr[kk] - zz * dzi[kk])
 
                 lim = rho[k] * dz[k] * nr[k] - nr_flux[k+1] * dt + small
-                if(lim < tot):
-                    print('limiter nr!!')
+                #if(lim < tot):
+                #    print('limiter nr!!')
                 tot = min(tot, lim)
                 nr_flux[k] = -tot / dt 
 

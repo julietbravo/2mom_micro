@@ -1,21 +1,23 @@
 import numpy as np
-from constants import *
+from .constants import *
 
 def exner(p):
     return (p/p0)**(Rd/cp);
 
 def esat(T):
-    if(np.size(T) > 1):
-        x = T - T0
-        x[x<-80] = -80
-    else:
-        x = np.max((-80.,T - T0));
+    #if(np.size(T) > 1):
+    #    x = T - T0
+    #    x[x<-80] = -80
+    #else:
+    #    x = np.max((-80.,T - T0));
+    x = np.maximum(-80, T-T0)
     return c0+x*(c1+x*(c2+x*(c3+x*(c4+x*(c5+x*(c6+x*(c7+x*c8)))))));
 
 def qsat(p, T):
     return ep*esat(T)/(p-(1-ep)*esat(T));
 
 def sat_adjust(thl, qt, p, exn):
+    qs = 1e12
     niter    = 0
     nitermax = 30
     tnr_old  = 1.e9
@@ -32,7 +34,6 @@ def sat_adjust(thl, qt, p, exn):
 class Thermo:
     def __init__(self, model):
         self.model = model
-
         self.pbot  = 1e5 
 
     def execute(self):

@@ -4,8 +4,6 @@ class Grid:
     def __init__(self, zsize, ktot):
         self.zsize  = zsize
         self.ktot   = ktot
-        
-    def create(self):
         self.kcells = self.ktot + 2
         self.kstart = 1
         self.kend   = self.ktot + 1 

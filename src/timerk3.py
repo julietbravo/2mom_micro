@@ -9,7 +9,7 @@ class Time:
         self.dt_max     = 30
         self.time       = 0
         self.dt         = self.dt_min
-        self.cfl_max    = 1.
+        self.cfl_max    = 2.0
 
         self.iter       = 0
         self.substep    = 0

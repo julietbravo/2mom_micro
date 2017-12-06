@@ -2,7 +2,7 @@ import numpy as np
 
 class Statistics:
     def __init__(self, model):
-        self.model = model
+        self.model  = model
         self.grid   = model.grid
         self.fields = model.fields
         self.time   = model.time
@@ -16,6 +16,8 @@ class Statistics:
         self.ql    = np.zeros((0, self.grid.ktot))
         self.qr    = np.zeros((0, self.grid.ktot))
         self.nr    = np.zeros((0, self.grid.ktot))
+        
+        self.rho   = np.zeros((0, self.grid.ktot))
 
         # Sedimentation velocities
         self.w_qr  = np.zeros((0, self.grid.ktot))
@@ -71,6 +73,8 @@ class Statistics:
             self.ql  = np.append(self.ql,  self.fields.ql. data[kstart:kend]) 
             self.qr  = np.append(self.qr,  self.fields.qr. data[kstart:kend]) 
             self.nr  = np.append(self.nr,  self.fields.nr. data[kstart:kend]) 
+
+            self.rho = np.append(self.rho, self.fields.rho.data[kstart:kend]) 
 
             # Sedimentation velocity ---------------------------------------------
             self.tmp1[:] = 0; self.tmp2[:] = 0
@@ -147,6 +151,8 @@ class Statistics:
         self.ql    = self.ql.reshape([nt, nz])
         self.qr    = self.qr.reshape([nt, nz])
         self.nr    = self.nr.reshape([nt, nz])
+
+        self.rho   = self.rho.reshape([nt, nz])
 
         self.w_qr  = self.w_qr.reshape([nt, nz])
         self.w_nr  = self.w_nr.reshape([nt, nz])
