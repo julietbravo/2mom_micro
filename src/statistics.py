@@ -59,9 +59,10 @@ class Statistics:
     def get_time_limit(self):
         return self.sampletime - np.mod(self.time.time, self.sampletime)
 
-    def execute(self):
+    def execute(self, verbose=False):
         if(np.mod(self.time.time, self.sampletime) == 0):
-            print('saving stats for t=%7.1f'%self.time.time)
+            if verbose:
+                print('saving stats for t=%7.1f'%self.time.time)
 
             kstart   = self.grid.kstart
             kend     = self.grid.kend

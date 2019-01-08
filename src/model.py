@@ -10,15 +10,16 @@ from .statistics    import Statistics
 from .micro_kernels import Micro
 
 class Model:
-    def __init__(self, case_in, name_in):
+    def __init__(self, case_in, name_in, verbose=False):
         self.name = name_in
 
         # Make deepcopy case
         case = copy.deepcopy(case_in)
 
         # Print output
-        print('----------', name_in, '----------')
-        print(case.__dict__)
+        if verbose:
+            print('----------', name_in, '----------')
+            print(case.__dict__)
 
         # Create vertical grid:
         self.grid = Grid(case.zsize, case.ktot)
@@ -130,6 +131,7 @@ class Model:
    
         self.stat.execute()
         self.stat.finish()
+        print("Model run '"+ self.name+"' finished.")
 
 
 

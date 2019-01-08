@@ -18,13 +18,13 @@ class Time:
     def get_time_limit(self):
         return max(self.dt_min, min(self.total_time - self.time, self.dt_max))
     
-    def set_time_step(self):
+    def set_time_step(self, verbose=False):
         dt1 = self.get_time_limit()
         dt2 = self.model.micro.get_time_limit(self.cfl_max, self.dt)
         dt3 = self.model.stat.get_time_limit()
         self.dt = np.array([dt1,dt2,dt3]).min()
 
-        if(self.iter % 10 == 0):
+        if(self.iter % 10 == 0) and verbose:
             print('it=%4i [-], dt=%6.2f [s], cfl_max=%6.2f [-]'%(self.iter, self.dt, self.model.micro.max_cfl))
 
     def finished(self):
