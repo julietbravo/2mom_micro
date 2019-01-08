@@ -46,6 +46,7 @@ class Statistics:
         # Sedimentation
         self.se_qr = np.zeros((0, self.grid.ktot))
         self.se_nr = np.zeros((0, self.grid.ktot))
+        self.var['rainrate'] = np.zeros((0, self.grid.ktot))
 
         # grid without ghost cells
         self.z   = self.grid.z[self.grid.kstart:self.grid.kend]
@@ -142,6 +143,7 @@ class Statistics:
             
             self.se_qr = np.append(self.se_qr, self.tmp1[kstart:kend])
             self.se_nr = np.append(self.se_nr, self.tmp2[kstart:kend])
+            self.var['rainrate'] = np.append(self.var['rainrate'], self.var['tmp3'][kstart:kend])
 
     def finish(self):
         nt = self.t.size
@@ -176,3 +178,4 @@ class Statistics:
 
         self.se_qr = self.se_qr.reshape([nt, nz])
         self.se_nr = self.se_nr.reshape([nt, nz])
+        self.var['rainrate'] = self.var['rainrate'].reshape([nt, nz])

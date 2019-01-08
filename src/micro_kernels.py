@@ -178,7 +178,7 @@ class Micro:
                 w_qr[k]  = -max(w_min, min(w_max, a_R - b_R * pow(1. + c_R/lambda_r, -(mur+4))))
                 w_nr[k]  = -max(w_min, min(w_max, a_R - b_R * pow(1. + c_R/lambda_r, -(mur+1))))
 
-    def sedimentation_ss08(self, qr_tend, nr_tend, qr, nr, rho, dz, dzi, dzhi, dt, subdt, kstart, kend, kcells):
+    def sedimentation_ss08(self, qr_tend, nr_tend, qr, nr, rho, dz, dzi, dzhi, dt, subdt, kstart, kend, kcells, rainrate=None):
         if(self.sw_sedi):
             # 1. Calculate sedimentation velocity
             w_qr = np.zeros(kcells)
@@ -248,3 +248,5 @@ class Micro:
 
                 qr_tend[k] += -(qr_flux[k+1] - qr_flux[k]) * dzi[k] / rho[k] 
                 nr_tend[k] += -(nr_flux[k+1] - nr_flux[k]) * dzi[k] / rho[k]
+
+                if rainrate is not None: rainrate[k] = - qr_flux[k] / rho_w
