@@ -28,7 +28,7 @@ def plot_tendencies(cases=[], plot_every=1):
     # qr-tendencies -------------------
     ax=pl.subplot(2,4,1)
     remove_top_right_axis()
-    pl.title('Autoconversion q_r', loc='left')
+    pl.title('Autoconversion q_r')
     linetypes = cycle(lines)
     times = []
     names = []
@@ -40,9 +40,9 @@ def plot_tendencies(cases=[], plot_every=1):
             if (ic == 0): times.append(p)
             if (t  == 0): names.append(p)
     
-    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.t[t]) for t in range(0,cases[0].stat.t.size,plot_every)], frameon=False, loc=4)
+    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.t[t]) for t in range(0,cases[0].stat.t.size,plot_every)], loc=4)
     ax.add_artist(legend1)
-    legend2 = pl.legend(names, ['{}'.format(case.name) for case in cases], frameon=False, loc=2)
+#    legend2 = pl.legend(names, ['{}'.format(case.name) for case in cases], loc=2)
     pl.xlabel('dqr/dt (mg kg-1 h-1)')
     pl.ylabel('z (m)')
     pl.ylim(0,ymax)
@@ -50,7 +50,7 @@ def plot_tendencies(cases=[], plot_every=1):
     ax=pl.subplot(2,4,2)
     remove_top_right_axis()
     linetypes = cycle(lines)
-    pl.title('Evaporation q_r', loc='left')
+    pl.title('Evaporation q_r')
     for case in cases:
         lt = next(linetypes)
         for t in range(0, case.stat.t.size, plot_every):
@@ -62,7 +62,7 @@ def plot_tendencies(cases=[], plot_every=1):
     ax=pl.subplot(2,4,3)
     remove_top_right_axis()
     linetypes = cycle(lines)
-    pl.title('Accretion q_r', loc='left')
+    pl.title('Accretion q_r')
     for case in cases:
         lt = next(linetypes)
         for t in range(0, case.stat.t.size, plot_every):
@@ -74,7 +74,7 @@ def plot_tendencies(cases=[], plot_every=1):
     ax=pl.subplot(2,4,4)
     remove_top_right_axis()
     linetypes = cycle(lines)
-    pl.title('Sedimentation q_r', loc='left')
+    pl.title('Sedimentation q_r')
     for case in cases:
         lt = next(linetypes)
         for t in range(0, case.stat.t.size, plot_every):
@@ -86,7 +86,7 @@ def plot_tendencies(cases=[], plot_every=1):
     # nr-tendencies -------------------
     ax=pl.subplot(2,4,5)
     remove_top_right_axis()
-    pl.title('Autoconversion n_r', loc='left')
+    pl.title('Autoconversion n_r')
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
@@ -99,7 +99,7 @@ def plot_tendencies(cases=[], plot_every=1):
     ax=pl.subplot(2,4,6)
     remove_top_right_axis()
     linetypes = cycle(lines)
-    pl.title('Evaporation n_r', loc='left')
+    pl.title('Evaporation n_r')
     for case in cases:
         lt = next(linetypes)
         for t in range(0, case.stat.t.size, plot_every):
@@ -111,7 +111,7 @@ def plot_tendencies(cases=[], plot_every=1):
     ax=pl.subplot(2,4,7)
     remove_top_right_axis()
     linetypes = cycle(lines)
-    pl.title('Self-collection and breakup n_r', loc='left')
+    pl.title('Self-collection and breakup n_r')
     for case in cases:
         lt = next(linetypes)
         for t in range(0, case.stat.t.size, plot_every):
@@ -123,7 +123,7 @@ def plot_tendencies(cases=[], plot_every=1):
     ax=pl.subplot(2,4,8)
     remove_top_right_axis()
     linetypes = cycle(lines)
-    pl.title('Sedimentation n_r', loc='left')
+    pl.title('Sedimentation n_r')
     for case in cases:
         lt = next(linetypes)
         for t in range(0, case.stat.t.size, plot_every):
@@ -165,9 +165,9 @@ def plot_profiles(cases=[], plot_every=1):
             if (ic == 0): times.append(p)
             if (t  == 0): names.append(p)
     
-    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.t[t]) for t in range(0,cases[0].stat.t.size,plot_every)], frameon=False, loc=4)
+    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.t[t]) for t in range(0,cases[0].stat.t.size,plot_every)], loc=4)
     ax.add_artist(legend1)
-    legend2 = pl.legend(names, ['{}'.format(case.name) for case in cases], frameon=False, loc=2)
+#    legend2 = pl.legend(names, ['{}'.format(case.name) for case in cases],loc=2)
 
     pl.xlabel('thl (C)')
     pl.ylabel('z (m)')
@@ -259,9 +259,9 @@ class Case:
         self.nccn    = 60e6      # Cloud droplet number
         self.sw_auto = True      # Enable/disable   autoconversion
         self.sw_evap = True      #    "     "       evaporation
-        self.sw_accr = True      #    "     "       accretion
-        self.sw_scbr = True      #    "     "       self-collection and breakup
-        self.sw_sedi = True      #    "     "       sedimentation
+        self.sw_accr = False     #    "     "       accretion
+        self.sw_scbr = False     #    "     "       self-collection and breakup
+        self.sw_sedi = False     #    "     "       sedimentation
 
         # Time:
         self.ttot    = 3600      # Total integration time (s)
@@ -297,7 +297,7 @@ if (__name__ == "__main__"):
     # Model output is available in run.stat; e.g. r1.stat.qr, r1.stat.z, etc.
     pl.figure()
     pl.subplot(121)
-    pl.title('qr (g kg-1), ncc=50e6', loc='left')
+    pl.title('qr (g kg-1), ncc=50e6')
     pl.pcolormesh(r1.stat.t, r1.stat.z, r1.stat.qr.transpose()*1e3, vmin=0, vmax=0.5, cmap=pl.cm.gist_earth_r)
     pl.xlim(0,r1.stat.t.max())
     pl.ylim(0,r1.stat.z.max())
@@ -306,10 +306,11 @@ if (__name__ == "__main__"):
     pl.colorbar()
 
     pl.subplot(122)
-    pl.title('qr (g kg-1), ncc=100e6', loc='left')
+    pl.title('qr (g kg-1), ncc=100e6')
     pl.pcolormesh(r3.stat.t, r3.stat.z, r3.stat.qr.transpose()*1e3, vmin=0, vmax=0.5, cmap=pl.cm.gist_earth_r)
     pl.xlim(0,r3.stat.t.max())
     pl.ylim(0,r3.stat.z.max())
     pl.xlabel('t (s)')
     pl.ylabel('z (m)')
     pl.colorbar()
+    pl.savefig('qr.png')
