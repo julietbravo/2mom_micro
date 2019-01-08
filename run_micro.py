@@ -256,6 +256,7 @@ class Case:
         self.dqtdt   = 0.        # Large scale moistening/drying tendency (kg kg-1 s-1)
 
         # Microphysics settings:
+        self.scheme = 'KK00'
         self.nc      = nc        # Cloud droplet number
         self.sw_auto = sw_auto   # Enable/disable   autoconversion
         self.sw_evap = True      #    "     "       evaporation

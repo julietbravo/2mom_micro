@@ -37,6 +37,8 @@ def minmod(a,b):
 
 class Micro:
     def __init__(self):
+        self.scheme = 'KK00'
+
         self.max_cfl = 1e-3
         self.nc    = 70e6
 
@@ -69,8 +71,9 @@ class Micro:
                                    pow(1. - pow(tau, 0.7), 3)           # SB06, Eq 6
 
                     # Tendencies
-                    # rho_0 is the surface density; in SB06 rho_0 / rho, which simply becomes rho_0 in the conversion to kg/kg
-                    qr_t = kccxs * pow(ql[k], 2) * pow(xc, 2) * (1. + phi_au / pow(1 - tau, 2)) * rho_0 # SB06, eq 4
+                    # Seifert and Beheng (SB06), eq 4: rho_0 is the surface density; in SB06 rho_0 / rho, which simply becomes rho_0 in the conversion to kg/kg
+                    # Khairoutdinov and Kogan (KK00), eq 29 (which has nc in cm-3)
+                    qr_t = kccxs * pow(ql[k], 2) * pow(xc, 2) * (1. + phi_au / pow(1 - tau, 2)) * rho_0 if self.scheme == 'SB06' else 1350 * pow(ql[k], 2.47) * pow(self.nc * 1e-6, -1.79)
                     nr_t = qr_t * rho[k] / x_star
 
                     qr_tend[k]  += qr_t 
@@ -122,7 +125,10 @@ class Micro:
                     tau    = 1 - ql[k] / (ql[k] + qr[k]) # SB06, Eq 5
                     phi_ac = pow(tau / (tau + 5e-5), 4)  # SB06, Eq 8
 
-                    qr_t   = k_cr * ql[k] *  qr[k] * phi_ac * pow(rho_0 / rho[k], 0.5) # SB06, Eq 7
+                    # accretion rate:
+                    # Seifert and Behen (SB06): eq 7
+                    # Khairoutdinov and Kogan (KK00): eq 33
+                    qr_t   = k_cr * ql[k] *  qr[k] * phi_ac * pow(rho_0 / rho[k], 0.5) if self.scheme == 'SB06' else 67. * pow(ql[k] * qr[k], 1.15)
 
                     # Accumulate tendencies
                     qr_tend[k]  += qr_t 
