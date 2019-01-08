@@ -241,7 +241,7 @@ def plot_profiles(cases=[], plot_every=1):
     pl.savefig('profiles.pdf')
 
 class Case:
-    def __init__(self):
+    def __init__(self, nc=60e6, sw_auto=True, sw_accr=True):
         # Initial vertical profiles:
         self.zi1     = 500       # Mixed-layer depth (m)
         self.thl     = 298       # Mixed-layer liquid water potential temperature (K)
@@ -256,12 +256,12 @@ class Case:
         self.dqtdt   = 0.        # Large scale moistening/drying tendency (kg kg-1 s-1)
 
         # Microphysics settings:
-        self.nc    = 60e6      # Cloud droplet number
-        self.sw_auto = True      # Enable/disable   autoconversion
+        self.nc      = nc        # Cloud droplet number
+        self.sw_auto = sw_auto   # Enable/disable   autoconversion
         self.sw_evap = True      #    "     "       evaporation
-        self.sw_accr = True     #    "     "       accretion
+        self.sw_accr = sw_accr   #    "     "       accretion
         self.sw_scbr = False     #    "     "       self-collection and breakup
-        self.sw_sedi = True     #    "     "       sedimentation
+        self.sw_sedi = True      #    "     "       sedimentation
 
         # Time:
         self.ttot    = 3600      # Total integration time (s)
@@ -271,7 +271,7 @@ class Case:
         self.ktot    = 100       # Number of vertical grid levels
 
         # Output / statistics
-        self.dt_stat = 90       # Time interval of the statistics output
+        self.dt_stat = 90        # Time interval of the statistics output
 
 if (__name__ == "__main__"):
     pl.close('all')
