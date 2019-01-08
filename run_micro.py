@@ -256,7 +256,7 @@ class Case:
         self.dqtdt   = 0.        # Large scale moistening/drying tendency (kg kg-1 s-1)
 
         # Microphysics settings:
-        self.nccn    = 60e6      # Cloud droplet number
+        self.nc    = 60e6      # Cloud droplet number
         self.sw_auto = True      # Enable/disable   autoconversion
         self.sw_evap = True      #    "     "       evaporation
         self.sw_accr = True     #    "     "       accretion
@@ -281,14 +281,14 @@ if (__name__ == "__main__"):
         case = Case()
         
         # Edit (if necessary) and run model
-        case.nccn = 50e6
-        r1 = Model(case, 'nccn=50e6')
+        case.nc = 50e6
+        r1 = Model(case, 'nc=50e6')
 
-        #case.nccn = 60e6
-        #r2 = Model(case, 'nccn=60e6')
+        #case.nc = 60e6
+        #r2 = Model(case, 'nc=60e6')
         
-        case.nccn = 100e6
-        r3 = Model(case, 'nccn=100e6')
+        case.nc = 100e6
+        r3 = Model(case, 'nc=100e6')
 
     # Predefined functions to plot vertical profiles and tendencies
     plot_tendencies([r1,r3], plot_every=10)

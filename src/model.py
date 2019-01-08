@@ -63,7 +63,7 @@ class Model:
 
         # Initialize the microphysics
         self.micro = Micro()
-        self.micro.nccn    = case.nccn
+        self.micro.nc    = case.nc
         self.micro.sw_auto = case.sw_auto
         self.micro.sw_evap = case.sw_evap
         self.micro.sw_accr = case.sw_accr

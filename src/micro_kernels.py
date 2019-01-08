@@ -38,7 +38,7 @@ def minmod(a,b):
 class Micro:
     def __init__(self):
         self.max_cfl = 1e-3
-        self.nccn    = 70e6
+        self.nc    = 70e6
 
         self.sw_auto = True
         self.sw_evap = True
@@ -63,7 +63,7 @@ class Micro:
 
             for k in range(kstart, kend):
                 if(ql[k] > ql_min):
-                    xc           = rho[k] * ql[k] / self.nccn           # Mean mass of cloud drops
+                    xc           = rho[k] * ql[k] / self.nc           # Mean mass of cloud drops
                     tau          = max(0, 1 - ql[k] / (ql[k] + qr[k]))  # SB06, Eq 5
                     phi_au       = 400 * pow(tau, 0.7) * \
                                    pow(1. - pow(tau, 0.7), 3)           # SB06, Eq 6
