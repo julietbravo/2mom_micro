@@ -259,9 +259,9 @@ class Case:
         self.nccn    = 60e6      # Cloud droplet number
         self.sw_auto = True      # Enable/disable   autoconversion
         self.sw_evap = True      #    "     "       evaporation
-        self.sw_accr = False     #    "     "       accretion
+        self.sw_accr = True     #    "     "       accretion
         self.sw_scbr = False     #    "     "       self-collection and breakup
-        self.sw_sedi = False     #    "     "       sedimentation
+        self.sw_sedi = True     #    "     "       sedimentation
 
         # Time:
         self.ttot    = 3600      # Total integration time (s)
