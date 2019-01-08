@@ -12,7 +12,7 @@ def plot_tendencies(cases=[], plot_every=1):
     """
 
     # Define unique colors based on the number of output times
-    cc = pl.cm.jet(np.linspace(0,1,cases[0].stat.t.size))
+    cc = pl.cm.jet(np.linspace(0,1,cases[0].stat.var['t'].size))
 
     # Define line types
     lines = ['-', '--', '-.', ':']
@@ -34,13 +34,13 @@ def plot_tendencies(cases=[], plot_every=1):
     names = []
     for ic,case in enumerate(cases):
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            p,=pl.plot(case.stat.au_qr[t,:]*1e6*3600, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            p,=pl.plot(case.stat.var['au_qr'][t,:]*1e6*3600, case.stat.var['z'], color=cc[t], linestyle=lt)
 
             if (ic == 0): times.append(p)
             if (t  == 0): names.append(p)
     
-    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.t[t]) for t in range(0,cases[0].stat.t.size,plot_every)], loc=4)
+    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.var['t'][t]) for t in range(0,cases[0].stat.var['t'].size,plot_every)], loc=4)
     ax.add_artist(legend1)
 #    legend2 = pl.legend(names, ['{}'.format(case.name) for case in cases], loc=2)
     pl.xlabel('dqr/dt (mg kg-1 h-1)')
@@ -53,8 +53,8 @@ def plot_tendencies(cases=[], plot_every=1):
     pl.title('Evaporation q_r')
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.ev_qr[t,:]*1e6*3600, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['ev_qr'][t,:]*1e6*3600, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dqr/dt (mg kg-1 h-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -65,8 +65,8 @@ def plot_tendencies(cases=[], plot_every=1):
     pl.title('Accretion q_r')
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.ac_qr[t,:]*1e6*3600, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['ac_qr'][t,:]*1e6*3600, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dqr/dt (mg kg-1 h-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -77,8 +77,8 @@ def plot_tendencies(cases=[], plot_every=1):
     pl.title('Sedimentation q_r')
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.se_qr[t,:]*1e6*3600, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['se_qr'][t,:]*1e6*3600, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dqr/dt (mg kg-1 h-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -90,8 +90,8 @@ def plot_tendencies(cases=[], plot_every=1):
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.au_nr[t,:]*3600/1000., case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['au_nr'][t,:]*3600/1000., case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dnr/dt (1000 m3-1 h-1)')
     pl.ylabel('z (m)')
     pl.ylim(0,ymax)
@@ -102,8 +102,8 @@ def plot_tendencies(cases=[], plot_every=1):
     pl.title('Evaporation n_r')
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.ev_nr[t,:]*3600/1000., case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['ev_nr'][t,:]*3600/1000., case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dnr/dt (1000 m-3 h-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -114,8 +114,8 @@ def plot_tendencies(cases=[], plot_every=1):
     pl.title('Self-collection and breakup n_r')
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.sb_nr[t,:]*3600/1000., case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['sb_nr'][t,:]*3600/1000., case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dnr/dt (1000 m-3 h-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -126,8 +126,8 @@ def plot_tendencies(cases=[], plot_every=1):
     pl.title('Sedimentation n_r')
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.se_nr[t,:]*3600/1000., case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['se_nr'][t,:]*3600/1000., case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('dnr/dt (1000 m-3 hour-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -140,7 +140,7 @@ def plot_profiles(cases=[], plot_every=1):
     """
 
     # Define unique colors based on the number of output times
-    cc = pl.cm.jet(np.linspace(0,1,cases[0].stat.t.size))
+    cc = pl.cm.jet(np.linspace(0,1,cases[0].stat.var['t'].size))
 
     # Define line types
     lines = ['-', '--', '-.', ':']
@@ -159,18 +159,18 @@ def plot_profiles(cases=[], plot_every=1):
     names = []
     for ic,case in enumerate(cases):
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            p,=pl.plot(case.stat.thl[t,:]-273.15, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            p,=pl.plot(case.stat.var['thl'][t,:]-273.15, case.stat.var['z'], color=cc[t], linestyle=lt)
 
             if (ic == 0): times.append(p)
             if (t  == 0): names.append(p)
     
-    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.t[t]) for t in range(0,cases[0].stat.t.size,plot_every)], loc=4)
+    legend1 = pl.legend(times, ['t={0:.0f} s'.format(cases[0].stat.var['t'][t]) for t in range(0,cases[0].stat.var['t'].size,plot_every)], loc=4)
     ax.add_artist(legend1)
 #    legend2 = pl.legend(names, ['{}'.format(case.name) for case in cases],loc=2)
 
-    pl.xlabel('thl (C)')
-    pl.ylabel('z (m)')
+    pl.xlabel('thl / C')
+    pl.ylabel('z / m')
     remove_top_right_axis()
     pl.ylim(0,ymax)
 
@@ -179,9 +179,9 @@ def plot_profiles(cases=[], plot_every=1):
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.qt[t,:]*1000, case.stat.z, color=cc[t], linestyle=lt)
-    pl.xlabel('qt (g kg-1)')
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['qt'][t,:]*1000, case.stat.var['z'], color=cc[t], linestyle=lt)
+    pl.xlabel('qt / (g kg-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
 
@@ -190,8 +190,8 @@ def plot_profiles(cases=[], plot_every=1):
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.ql[t,:]*1000, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['ql'][t,:]*1000, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('ql (g kg-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -201,8 +201,8 @@ def plot_profiles(cases=[], plot_every=1):
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.qr[t,:]*1e6, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['qr'][t,:]*1e6, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('qr (mg kg-1)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -212,28 +212,28 @@ def plot_profiles(cases=[], plot_every=1):
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            pl.plot(case.stat.nr[t,:]/1e3, case.stat.z, color=cc[t], linestyle=lt)
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            pl.plot(case.stat.var['nr'][t,:]/1e3, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('nr (dm-3)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
- 
+     
     ax=pl.subplot(166)
     remove_top_right_axis()
     linetypes = cycle(lines)
     for case in cases:
         lt = next(linetypes)
-        for t in range(0, case.stat.t.size, plot_every):
-            if (np.any(case.stat.qr[t,:]>0)):
+        for t in range(0, case.stat.var['t'].size, plot_every):
+            if (np.any(case.stat.var['qr'][t,:]>0)):
                 # Calculate mean mass/drop
-                m = (case.stat.rho[t,:]*case.stat.qr[t,:])/(case.stat.nr[t,:]+1e-12)
+                m = (case.stat.var['rho'][t,:]*case.stat.var['qr'][t,:])/(case.stat.var['nr'][t,:]+1e-12)
                 # Calculate mean diameter
                 pirhow = np.pi * 1e3 / 6.
                 D = (m / pirhow)**(1./3.)
                 # Mask small drops:
                 D = np.ma.masked_less(D, 1e-5)
 
-                pl.semilogx(D*1e3, case.stat.z, color=cc[t], linestyle=lt)
+                pl.semilogx(D*1e3, case.stat.var['z'], color=cc[t], linestyle=lt)
     pl.xlabel('mean diameter (mm)')
     ax.set_yticks([])
     pl.ylim(0,ymax)
@@ -298,8 +298,8 @@ if (__name__ == "__main__"):
     pl.figure()
     pl.subplot(121)
     pl.title('qr (g kg-1), ncc=50e6')
-    pl.pcolormesh(r1.stat.t, r1.stat.z, r1.stat.qr.transpose()*1e3, vmin=0, vmax=0.5, cmap=pl.cm.gist_earth_r)
-    pl.xlim(0,r1.stat.t.max())
+    pl.pcolormesh(r1.stat.var['t'], r1.stat.z, r1.stat.qr.transpose()*1e3, vmin=0, vmax=0.5, cmap=pl.cm.gist_earth_r)
+    pl.xlim(0,r1.stat.var['t'].max())
     pl.ylim(0,r1.stat.z.max())
     pl.xlabel('t (s)')
     pl.ylabel('z (m)')
@@ -307,8 +307,8 @@ if (__name__ == "__main__"):
 
     pl.subplot(122)
     pl.title('qr (g kg-1), ncc=100e6')
-    pl.pcolormesh(r3.stat.t, r3.stat.z, r3.stat.qr.transpose()*1e3, vmin=0, vmax=0.5, cmap=pl.cm.gist_earth_r)
-    pl.xlim(0,r3.stat.t.max())
+    pl.pcolormesh(r3.stat.var['t'], r3.stat.z, r3.stat.qr.transpose()*1e3, vmin=0, vmax=0.5, cmap=pl.cm.gist_earth_r)
+    pl.xlim(0,r3.stat.var['t'].max())
     pl.ylim(0,r3.stat.z.max())
     pl.xlabel('t (s)')
     pl.ylabel('z (m)')

@@ -9,53 +9,54 @@ class Statistics:
 
         self.sampletime = 120
 
+        self.var = {}
         ## Empty lists to store data or numpy arrays
-        self.t     = np.zeros( 0                 )
-        self.thl   = np.zeros((0, self.grid.ktot))
-        self.qt    = np.zeros((0, self.grid.ktot))
-        self.ql    = np.zeros((0, self.grid.ktot))
-        self.qr    = np.zeros((0, self.grid.ktot))
-        self.nr    = np.zeros((0, self.grid.ktot))
+        self.var['t']     = np.zeros( 0                 )
+        self.var['thl']   = np.zeros((0, self.grid.ktot))
+        self.var['qt']    = np.zeros((0, self.grid.ktot))
+        self.var['ql']    = np.zeros((0, self.grid.ktot))
+        self.var['qr']    = np.zeros((0, self.grid.ktot))
+        self.var['nr']    = np.zeros((0, self.grid.ktot))
         
-        self.rho   = np.zeros((0, self.grid.ktot))
+        self.var['rho']   = np.zeros((0, self.grid.ktot))
 
         # Sedimentation velocities
-        self.w_qr  = np.zeros((0, self.grid.ktot))
-        self.w_nr  = np.zeros((0, self.grid.ktot))
+        self.var['w_qr']  = np.zeros((0, self.grid.ktot))
+        self.var['w_nr']  = np.zeros((0, self.grid.ktot))
 
         # Autoconversion
-        self.au_qr = np.zeros((0, self.grid.ktot))
-        self.au_nr = np.zeros((0, self.grid.ktot))
-        self.au_qt = np.zeros((0, self.grid.ktot))
-        self.au_th = np.zeros((0, self.grid.ktot))
+        self.var['au_qr'] = np.zeros((0, self.grid.ktot))
+        self.var['au_nr'] = np.zeros((0, self.grid.ktot))
+        self.var['au_qt'] = np.zeros((0, self.grid.ktot))
+        self.var['au_th'] = np.zeros((0, self.grid.ktot))
 
         # Evaporation
-        self.ev_qr = np.zeros((0, self.grid.ktot))
-        self.ev_nr = np.zeros((0, self.grid.ktot))
-        self.ev_qt = np.zeros((0, self.grid.ktot))
-        self.ev_th = np.zeros((0, self.grid.ktot))
+        self.var['ev_qr'] = np.zeros((0, self.grid.ktot))
+        self.var['ev_nr'] = np.zeros((0, self.grid.ktot))
+        self.var['ev_qt'] = np.zeros((0, self.grid.ktot))
+        self.var['ev_th'] = np.zeros((0, self.grid.ktot))
 
         # Accretion
-        self.ac_qr = np.zeros((0, self.grid.ktot))
-        self.ac_qt = np.zeros((0, self.grid.ktot))
-        self.ac_th = np.zeros((0, self.grid.ktot))
+        self.var['ac_qr'] = np.zeros((0, self.grid.ktot))
+        self.var['ac_qt'] = np.zeros((0, self.grid.ktot))
+        self.var['ac_th'] = np.zeros((0, self.grid.ktot))
 
         # Self-collection and breaukup
-        self.sb_nr = np.zeros((0, self.grid.ktot))
+        self.var['sb_nr'] = np.zeros((0, self.grid.ktot))
 
         # Sedimentation
-        self.se_qr = np.zeros((0, self.grid.ktot))
-        self.se_nr = np.zeros((0, self.grid.ktot))
+        self.var['se_qr'] = np.zeros((0, self.grid.ktot))
+        self.var['se_nr'] = np.zeros((0, self.grid.ktot))
         self.var['rainrate'] = np.zeros((0, self.grid.ktot))
 
         # grid without ghost cells
-        self.z   = self.grid.z[self.grid.kstart:self.grid.kend]
+        self.var['z']   = self.grid.z[self.grid.kstart:self.grid.kend]
 
         # Tmp fields for tendencies
-        self.tmp1 = np.zeros(self.grid.kcells)
-        self.tmp2 = np.zeros(self.grid.kcells)
-        self.tmp3 = np.zeros(self.grid.kcells)
-        self.tmp4 = np.zeros(self.grid.kcells)
+        self.var['tmp1'] = np.zeros(self.grid.kcells)
+        self.var['tmp2'] = np.zeros(self.grid.kcells)
+        self.var['tmp3'] = np.zeros(self.grid.kcells)
+        self.var['tmp4'] = np.zeros(self.grid.kcells)
         
     def get_time_limit(self):
         return self.sampletime - np.mod(self.time.time, self.sampletime)
@@ -67,115 +68,115 @@ class Statistics:
 
             kstart   = self.grid.kstart
             kend     = self.grid.kend
-            self.t   = np.append(self.t, self.time.time) 
+            self.var['t']   = np.append(self.var['t'], self.time.time) 
 
             # Mean fields --------------------------------------------------------
-            self.thl = np.append(self.thl, self.fields.thl.data[kstart:kend]) 
-            self.qt  = np.append(self.qt,  self.fields.qt. data[kstart:kend]) 
-            self.ql  = np.append(self.ql,  self.fields.ql. data[kstart:kend]) 
-            self.qr  = np.append(self.qr,  self.fields.qr. data[kstart:kend]) 
-            self.nr  = np.append(self.nr,  self.fields.nr. data[kstart:kend]) 
+            self.var['thl'] = np.append(self.var['thl'], self.fields.thl.data[kstart:kend]) 
+            self.var['qt']  = np.append(self.var['qt'],  self.fields.qt. data[kstart:kend]) 
+            self.var['ql']  = np.append(self.var['ql'],  self.fields.ql. data[kstart:kend]) 
+            self.var['qr']  = np.append(self.var['qr'],  self.fields.qr. data[kstart:kend]) 
+            self.var['nr']  = np.append(self.var['nr'],  self.fields.nr. data[kstart:kend]) 
 
-            self.rho = np.append(self.rho, self.fields.rho.data[kstart:kend]) 
+            self.var['rho'] = np.append(self.var['rho'], self.fields.rho.data[kstart:kend]) 
 
             # Sedimentation velocity ---------------------------------------------
-            self.tmp1[:] = 0; self.tmp2[:] = 0
+            self.var['tmp1'][:] = 0; self.var['tmp2'][:] = 0
 
-            self.model.micro.sedimentation_velocity(self.tmp1, self.tmp2, \
+            self.model.micro.sedimentation_velocity(self.var['tmp1'], self.var['tmp2'], \
                                                     self.fields.qr.data, self.fields.nr.data, 
                                                     self.fields.rho.data, self.grid.kstart, self.grid.kend)
 
-            self.w_qr = np.append(self.w_qr, self.tmp1[kstart:kend])
-            self.w_nr = np.append(self.w_nr, self.tmp2[kstart:kend])
+            self.var['w_qr'] = np.append(self.var['w_qr'], self.var['tmp1'][kstart:kend])
+            self.var['w_nr'] = np.append(self.var['w_nr'], self.var['tmp2'][kstart:kend])
 
             # Autoconversion -----------------------------------------------------
-            self.tmp1[:] = 0; self.tmp2[:] = 0; self.tmp3[:] = 0; self.tmp4[:] = 0
+            self.var['tmp1'][:] = 0; self.var['tmp2'][:] = 0; self.var['tmp3'][:] = 0; self.var['tmp4'][:] = 0
 
-            self.model.micro.autoconversion(self.tmp1, self.tmp2, self.tmp3, self.tmp4, \
+            self.model.micro.autoconversion(self.var['tmp1'], self.var['tmp2'], self.var['tmp3'], self.var['tmp4'], \
                                             self.fields.qr.data, self.fields.nr.data, self.fields.ql.data, self.fields.rho.data, \
                                             self.fields.exn.data, self.grid.kstart, self.grid.kend)
 
-            self.au_qr = np.append(self.au_qr, self.tmp1[kstart:kend])
-            self.au_nr = np.append(self.au_nr, self.tmp2[kstart:kend])
-            self.au_th = np.append(self.au_th, self.tmp3[kstart:kend])
-            self.au_qt = np.append(self.au_qt, self.tmp4[kstart:kend])
+            self.var['au_qr'] = np.append(self.var['au_qr'], self.var['tmp1'][kstart:kend])
+            self.var['au_nr'] = np.append(self.var['au_nr'], self.var['tmp2'][kstart:kend])
+            self.var['au_th'] = np.append(self.var['au_th'], self.var['tmp3'][kstart:kend])
+            self.var['au_qt'] = np.append(self.var['au_qt'], self.var['tmp4'][kstart:kend])
 
             # Evaporation --------------------------------------------------------
-            self.tmp1[:] = 0; self.tmp2[:] = 0; self.tmp3[:] = 0; self.tmp4[:] = 0
+            self.var['tmp1'][:] = 0; self.var['tmp2'][:] = 0; self.var['tmp3'][:] = 0; self.var['tmp4'][:] = 0
 
-            self.model.micro.evaporation(self.tmp1, self.tmp2, self.tmp3, self.tmp4, \
+            self.model.micro.evaporation(self.var['tmp1'], self.var['tmp2'], self.var['tmp3'], self.var['tmp4'], \
                                          self.fields.qr.data, self.fields.nr.data, self.fields.qt.data, self.fields.qs.data, \
                                          self.fields.ql.data, self.fields.thl.data*self.fields.exn.data, self.fields.rho.data, \
                                          self.fields.exn.data, self.grid.kstart, self.grid.kend)
 
-            self.ev_qr = np.append(self.ev_qr, self.tmp1[kstart:kend])
-            self.ev_nr = np.append(self.ev_nr, self.tmp2[kstart:kend])
-            self.ev_th = np.append(self.ev_th, self.tmp3[kstart:kend])
-            self.ev_qt = np.append(self.ev_qt, self.tmp4[kstart:kend])
+            self.var['ev_qr'] = np.append(self.var['ev_qr'], self.var['tmp1'][kstart:kend])
+            self.var['ev_nr'] = np.append(self.var['ev_nr'], self.var['tmp2'][kstart:kend])
+            self.var['ev_th'] = np.append(self.var['ev_th'], self.var['tmp3'][kstart:kend])
+            self.var['ev_qt'] = np.append(self.var['ev_qt'], self.var['tmp4'][kstart:kend])
 
             # Accretion ----------------------------------------------------------
-            self.tmp1[:] = 0; self.tmp2[:] = 0; self.tmp3[:] = 0; self.tmp4[:] = 0
+            self.var['tmp1'][:] = 0; self.var['tmp2'][:] = 0; self.var['tmp3'][:] = 0; self.var['tmp4'][:] = 0
 
-            self.model.micro.accretion(self.tmp1, self.tmp2, self.tmp3, self.tmp4, \
+            self.model.micro.accretion(self.var['tmp1'], self.var['tmp2'], self.var['tmp3'], self.var['tmp4'], \
                                        self.fields.qr.data, self.fields.nr.data, self.fields.ql.data, \
                                        self.fields.rho.data, self.fields.exn.data, self.grid.kstart, self.grid.kend)
 
-            self.ac_qr = np.append(self.ac_qr, self.tmp1[kstart:kend])
-            self.ac_th = np.append(self.ac_th, self.tmp3[kstart:kend])
-            self.ac_qt = np.append(self.ac_qt, self.tmp4[kstart:kend])
+            self.var['ac_qr'] = np.append(self.var['ac_qr'], self.var['tmp1'][kstart:kend])
+            self.var['ac_th'] = np.append(self.var['ac_th'], self.var['tmp3'][kstart:kend])
+            self.var['ac_qt'] = np.append(self.var['ac_qt'], self.var['tmp4'][kstart:kend])
 
             # Self-collection and breakup ----------------------------------------
-            self.tmp1[:] = 0; self.tmp2[:] = 0; self.tmp3[:] = 0; self.tmp4[:] = 0
+            self.var['tmp1'][:] = 0; self.var['tmp2'][:] = 0; self.var['tmp3'][:] = 0; self.var['tmp4'][:] = 0
 
-            self.model.micro.selfcollection_breakup(self.tmp1, self.tmp2, self.tmp3, self.tmp4, \
+            self.model.micro.selfcollection_breakup(self.var['tmp1'], self.var['tmp2'], self.var['tmp3'], self.var['tmp4'], \
                                                 self.fields.qr.data, self.fields.nr.data, \
                                                 self.fields.rho.data, self.grid.kstart, self.grid.kend)
             
-            self.sb_nr = np.append(self.sb_nr, self.tmp2[kstart:kend])
+            self.var['sb_nr'] = np.append(self.var['sb_nr'], self.var['tmp2'][kstart:kend])
 
             # Sedimentation ------------------------------------------------------ 
-            self.tmp1[:] = 0; self.tmp2[:] = 0; self.tmp3[:] = 0; self.tmp4[:] = 0
+            self.var['tmp1'][:] = 0; self.var['tmp2'][:] = 0; self.var['tmp3'][:] = 0; self.var['tmp4'][:] = 0
 
-            self.model.micro.sedimentation_ss08(self.tmp1, self.tmp2, \
+            self.model.micro.sedimentation_ss08(self.var['tmp1'], self.var['tmp2'], \
                                                 self.fields.qr.data, self.fields.nr.data, \
                                                 self.fields.rho.data, self.grid.dz, self.grid.dzi, self.grid.dzhi, self.time.dt, \
-                                                self.time.dt, self.grid.kstart, self.grid.kend, self.grid.kcells)
+                                                self.time.dt, self.grid.kstart, self.grid.kend, self.grid.kcells, rainrate=self.var['tmp3'])
             
-            self.se_qr = np.append(self.se_qr, self.tmp1[kstart:kend])
-            self.se_nr = np.append(self.se_nr, self.tmp2[kstart:kend])
+            self.var['se_qr'] = np.append(self.var['se_qr'], self.var['tmp1'][kstart:kend])
+            self.var['se_nr'] = np.append(self.var['se_nr'], self.var['tmp2'][kstart:kend])
             self.var['rainrate'] = np.append(self.var['rainrate'], self.var['tmp3'][kstart:kend])
 
     def finish(self):
-        nt = self.t.size
+        nt = self.var['t'].size
         nz = self.grid.ktot
 
-        self.thl   = self.thl.reshape([nt, nz])
-        self.qt    = self.qt.reshape([nt, nz])
-        self.ql    = self.ql.reshape([nt, nz])
-        self.qr    = self.qr.reshape([nt, nz])
-        self.nr    = self.nr.reshape([nt, nz])
+        self.var['thl']   = self.var['thl'].reshape([nt, nz])
+        self.var['qt']    = self.var['qt'].reshape([nt, nz])
+        self.var['ql']    = self.var['ql'].reshape([nt, nz])
+        self.var['qr']    = self.var['qr'].reshape([nt, nz])
+        self.var['nr']    = self.var['nr'].reshape([nt, nz])
 
-        self.rho   = self.rho.reshape([nt, nz])
+        self.var['rho']   = self.var['rho'].reshape([nt, nz])
 
-        self.w_qr  = self.w_qr.reshape([nt, nz])
-        self.w_nr  = self.w_nr.reshape([nt, nz])
+        self.var['w_qr']  = self.var['w_qr'].reshape([nt, nz])
+        self.var['w_nr']  = self.var['w_nr'].reshape([nt, nz])
 
-        self.au_qr = self.au_qr.reshape([nt, nz])
-        self.au_nr = self.au_nr.reshape([nt, nz])
-        self.au_th = self.au_th.reshape([nt, nz])
-        self.au_qt = self.au_qt.reshape([nt, nz])
+        self.var['au_qr'] = self.var['au_qr'].reshape([nt, nz])
+        self.var['au_nr'] = self.var['au_nr'].reshape([nt, nz])
+        self.var['au_th'] = self.var['au_th'].reshape([nt, nz])
+        self.var['au_qt'] = self.var['au_qt'].reshape([nt, nz])
 
-        self.ev_qr = self.ev_qr.reshape([nt, nz])
-        self.ev_nr = self.ev_nr.reshape([nt, nz])
-        self.ev_th = self.ev_th.reshape([nt, nz])
-        self.ev_qt = self.ev_qt.reshape([nt, nz])
+        self.var['ev_qr'] = self.var['ev_qr'].reshape([nt, nz])
+        self.var['ev_nr'] = self.var['ev_nr'].reshape([nt, nz])
+        self.var['ev_th'] = self.var['ev_th'].reshape([nt, nz])
+        self.var['ev_qt'] = self.var['ev_qt'].reshape([nt, nz])
 
-        self.ac_qr = self.ac_qr.reshape([nt, nz])
-        self.ac_th = self.ac_th.reshape([nt, nz])
-        self.ac_qt = self.ac_qt.reshape([nt, nz])
+        self.var['ac_qr'] = self.var['ac_qr'].reshape([nt, nz])
+        self.var['ac_th'] = self.var['ac_th'].reshape([nt, nz])
+        self.var['ac_qt'] = self.var['ac_qt'].reshape([nt, nz])
 
-        self.sb_nr = self.sb_nr.reshape([nt, nz])
+        self.var['sb_nr'] = self.var['sb_nr'].reshape([nt, nz])
 
-        self.se_qr = self.se_qr.reshape([nt, nz])
-        self.se_nr = self.se_nr.reshape([nt, nz])
+        self.var['se_qr'] = self.var['se_qr'].reshape([nt, nz])
+        self.var['se_nr'] = self.var['se_nr'].reshape([nt, nz])
         self.var['rainrate'] = self.var['rainrate'].reshape([nt, nz])
