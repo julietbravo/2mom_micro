@@ -19,11 +19,13 @@ class Fields:
 
         self.ad =[]
         self.init_diagnostic("ql",  model.grid.kcells)  
+        self.init_diagnostic("qv",  model.grid.kcells)  
         self.init_diagnostic("qs",  model.grid.kcells)  
         self.init_diagnostic("p" ,  model.grid.kcells)   
         self.init_diagnostic("exn", model.grid.kcells) 
         self.init_diagnostic("rho", model.grid.kcells) 
         self.init_diagnostic("thv", model.grid.kcells) 
+        self.init_diagnostic("th", model.grid.kcells) 
 
     def init_prognostic(self, name, kcells):
         setattr(self, name, Field_1d_p(kcells)) 

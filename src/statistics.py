@@ -13,7 +13,10 @@ class Statistics:
         ## Empty lists to store data or numpy arrays
         self.var['t']     = np.zeros( 0                 )
         self.var['thl']   = np.zeros((0, self.grid.ktot))
+        self.var['th']   = np.zeros((0, self.grid.ktot))
         self.var['qt']    = np.zeros((0, self.grid.ktot))
+        self.var['qs']    = np.zeros((0, self.grid.ktot))
+        self.var['qv']    = np.zeros((0, self.grid.ktot))
         self.var['ql']    = np.zeros((0, self.grid.ktot))
         self.var['qr']    = np.zeros((0, self.grid.ktot))
         self.var['nr']    = np.zeros((0, self.grid.ktot))
@@ -72,7 +75,10 @@ class Statistics:
 
             # Mean fields --------------------------------------------------------
             self.var['thl'] = np.append(self.var['thl'], self.fields.thl.data[kstart:kend]) 
+            self.var['th'] = np.append(self.var['th'], self.fields.th.data[kstart:kend]) 
             self.var['qt']  = np.append(self.var['qt'],  self.fields.qt. data[kstart:kend]) 
+            self.var['qv']  = np.append(self.var['qv'],  self.fields.qv. data[kstart:kend]) 
+            self.var['qs']  = np.append(self.var['qs'],  self.fields.qs. data[kstart:kend]) 
             self.var['ql']  = np.append(self.var['ql'],  self.fields.ql. data[kstart:kend]) 
             self.var['qr']  = np.append(self.var['qr'],  self.fields.qr. data[kstart:kend]) 
             self.var['nr']  = np.append(self.var['nr'],  self.fields.nr. data[kstart:kend]) 
@@ -151,7 +157,10 @@ class Statistics:
         nz = self.grid.ktot
 
         self.var['thl']   = self.var['thl'].reshape([nt, nz])
+        self.var['th']   = self.var['th'].reshape([nt, nz])
         self.var['qt']    = self.var['qt'].reshape([nt, nz])
+        self.var['qv']    = self.var['qv'].reshape([nt, nz])
+        self.var['qs']    = self.var['qs'].reshape([nt, nz])
         self.var['ql']    = self.var['ql'].reshape([nt, nz])
         self.var['qr']    = self.var['qr'].reshape([nt, nz])
         self.var['nr']    = self.var['nr'].reshape([nt, nz])

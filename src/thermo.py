@@ -45,11 +45,13 @@ class Thermo:
         qt     = model.fields.qt.data
 
         ql     = model.fields.ql .data
+        qv     = model.fields.qv .data
         qs     = model.fields.qs .data
         p      = model.fields.p  .data
         exn    = model.fields.exn.data
         rho    = model.fields.rho.data
         thv    = model.fields.thv.data
+        th    = model.fields.th.data
 
         # Some tmp arrays 
         exh   = np.zeros(model.grid.kcells)
@@ -74,7 +76,9 @@ class Thermo:
             exn[k-1]          = exner(p[k-1]);
             ql[k-1], qs[k-1]  = sat_adjust(thl[k-1], qt[k-1], p[k-1], exn[k-1]); 
             thv[k-1]          = (thl[k-1] + Lv*ql[k-1]/(cp*exn[k-1])) * (1. - (1. - Rv/Rd)*qt[k-1] - Rv/Rd*ql[k-1]); 
+            th[k-1]          = (thl[k-1] + Lv*ql[k-1]/(cp*exn[k-1]));
             rho[k-1]          = p[k-1] / (Rd * exn[k-1] * thv[k-1]);
+            qv[k-1]           = qt[k-1] - ql[k-1] 
     
             # 2. Calculate half level pressure at zh[k] using values at z[k-1]
             prefh[k] = pow((pow(prefh[k-1],rdcp) - grav * pow(p0,rdcp) * model.grid.dz[k-1] / (cp * thv[k-1])),(1./rdcp));
