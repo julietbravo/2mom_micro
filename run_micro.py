@@ -5,16 +5,28 @@ from itertools import cycle
 # Import the microphysics model code
 from src.model import Model
 from src.tools import *
+from src.thermo import calc_zLCL
 from src.plot_util import plot_tendencies, plot_profiles
 
+def run_column_model(run_name='run', thl=298, qt=16e-3, nc=60e6, sw_auto=True, sw_accr=True, sw_evap=True, sw_scbr=False, sw_sedi=True):
+    case = Case(
+              thl=thl,      # liquid water potential temperature, unit: K
+              qt=qt,     # total water mixing ratio, unit: kg/kg
+              nc=nc,      # cloud droplet number concentration, unit: 1/m3
+              sw_auto=sw_auto, # autoconverion: on
+              sw_accr=sw_accr, # accretion: on
+              sw_evap=sw_evap, # rain drop evaporation: on
+              sw_sedi=True, # rain drop sedimentation: on
+              )
+    return Model(case, run_name)
 
 
 class Case:
-    def __init__(self, nc=60e6, sw_auto=True, sw_accr=True):
+    def __init__(self, thl=298, qt=16e-3, nc=60e6, sw_auto=True, sw_accr=True, sw_evap=True, sw_scbr=False, sw_sedi=True):
         # Initial vertical profiles:
-        self.zi1     = 500       # Mixed-layer depth (m)
-        self.thl     = 298       # Mixed-layer liquid water potential temperature (K)
-        self.qt      = 16e-3     # Mixed-layer total specific humidity (kg kg-1)
+        self.zi1     = calc_zLCL(thl, qt, 101325)       # Mixed-layer depth (m)
+        self.thl     = thl       # Mixed-layer liquid water potential temperature (K)
+        self.qt      = qt     # Mixed-layer total specific humidity (kg kg-1)
 
         self.dthldz  = 2.3e-3    # Cloud layer liquid water potential temperature lapse rate (K m-1)
         self.dqtdz   = -2.8e-6   # Cloud layer specific humidity lapse rate (kg kg-1 m-1)
@@ -28,10 +40,10 @@ class Case:
         self.scheme = 'KK00'
         self.nc      = nc        # Cloud droplet number
         self.sw_auto = sw_auto   # Enable/disable   autoconversion
-        self.sw_evap = True      #    "     "       evaporation
+        self.sw_evap = sw_evap     #    "     "       evaporation
         self.sw_accr = sw_accr   #    "     "       accretion
-        self.sw_scbr = False     #    "     "       self-collection and breakup
-        self.sw_sedi = True      #    "     "       sedimentation
+        self.sw_scbr = sw_scbr     #    "     "       self-collection and breakup
+        self.sw_sedi = sw_sedi    #    "     "       sedimentation
 
         # Time:
         self.ttot    = 3600      # Total integration time (s)

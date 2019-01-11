@@ -16,6 +16,16 @@ def esat(T):
 def qsat(p, T):
     return ep*esat(T)/(p-(1-ep)*esat(T));
 
+def calc_zLCL(theta, qt, psurf):
+    '''
+    returns: adiabatic LCL in m (following Hoffmann et al. (in preparation))
+    theta: at surface or constant value in BL in K
+    qt: at surface or constant value in BL in kg/kg
+    psurf: surface pressure in Pa
+    '''
+    tbl = theta * ((psurf / p0))**(Rd/cp)
+    return 102.041 * tbl + 553061. / np.log(6.46398e-7 * qt)
+
 def sat_adjust(thl, qt, p, exn):
     qs = 1e12
     niter    = 0
