@@ -285,6 +285,7 @@ def plot_profile_evolution(cases, varname, plot_every=10):
     plt.ylabel('height / m')
     #plt.set_yticks([])
     plt.ylim(0,ymax)
+    plt.savefig("profile_evolution_"+varname+".pdf", bbox_inches='tight')
     plt.show()
 
 def plot_profile_comparison(case, varnames):
@@ -319,6 +320,10 @@ def plot_profile_comparison(case, varnames):
     plt.ylabel('height / m')
     #plt.set_yticks([])
     plt.ylim(0,ymax)
+    varnamestring = ''
+    for varname in varnames:
+        varnamestring += varname
+    plt.savefig("initial_conditions_"+varnamestring+".pdf", bbox_inches='tight')
     plt.show()
 
 
@@ -365,4 +370,5 @@ def plot_timeseries(cases, varname):
     plt.xlabel('time / min')
     plt.ylabel(ylabel)
     plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.savefig("timeseries_"+varname+".pdf", bbox_inches='tight')
     plt.show()
