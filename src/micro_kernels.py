@@ -73,7 +73,7 @@ class Micro:
                     # Tendencies
                     # Seifert and Beheng (SB06), eq 4: rho_0 is the surface density; in SB06 rho_0 / rho, which simply becomes rho_0 in the conversion to kg/kg
                     # Khairoutdinov and Kogan (KK00), eq 29 (which has nc in cm-3)
-                    qr_t = kccxs * pow(ql[k], 2) * pow(xc, 2) * (1. + phi_au / pow(1 - tau, 2)) * rho_0 if self.scheme == 'SB06' else 1350 * pow(ql[k], 2.47) * pow(self.nc * 1e-6, -1.79)
+                    qr_t = self.auto_tuning_prefac * kccxs * pow(ql[k], 2) * pow(xc, 2) * (1. + phi_au / pow(1 - tau, 2)) * rho_0 if self.scheme == 'SB06' else self.auto_tuning_prefac * 1350 * pow(ql[k], 2.47) * pow(self.nc * 1e-6, self.auto_exponent_KK)
                     nr_t = qr_t * rho[k] / x_star
 
                     qr_tend[k]  += qr_t 

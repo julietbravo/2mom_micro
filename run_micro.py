@@ -8,7 +8,7 @@ from src.tools import *
 from src.thermo import calc_zLCL
 from src.plot_util import plot_tendencies, plot_profiles
 
-def run_column_model(run_name='run', thl=298, qt=16e-3, nc=60e6, sw_auto=True, sw_accr=True, sw_evap=True, sw_scbr=False, sw_sedi=True):
+def run_column_model(run_name='run', thl=298, qt=16e-3, nc=60e6, sw_auto=True, sw_accr=True, sw_evap=True, sw_scbr=False, sw_sedi=True, auto_tuning_prefac=1., auto_exponent_KK=-1.79):
     case = Case(
               thl=thl,      # liquid water potential temperature, unit: K
               qt=qt,     # total water mixing ratio, unit: kg/kg
@@ -17,12 +17,14 @@ def run_column_model(run_name='run', thl=298, qt=16e-3, nc=60e6, sw_auto=True, s
               sw_accr=sw_accr, # accretion: on
               sw_evap=sw_evap, # rain drop evaporation: on
               sw_sedi=True, # rain drop sedimentation: on
+              auto_tuning_prefac=auto_tuning_prefac, # prefactor that autoconversion is multiplied with to mimic GCM tuning
+              auto_exponent_KK=auto_exponent_KK # droplet number exponent in the KK description of the autoconversion rate
               )
     return Model(case, run_name)
 
 
 class Case:
-    def __init__(self, thl=298, qt=16e-3, nc=60e6, sw_auto=True, sw_accr=True, sw_evap=True, sw_scbr=False, sw_sedi=True):
+    def __init__(self, thl=298, qt=16e-3, nc=60e6, sw_auto=True, sw_accr=True, sw_evap=True, sw_scbr=False, sw_sedi=True, auto_tuning_prefac=1., auto_exponent_KK=-1.79):
         # Initial vertical profiles:
         self.zi1     = calc_zLCL(thl, qt, 101325)       # Mixed-layer depth (m)
         self.thl     = thl       # Mixed-layer liquid water potential temperature (K)
@@ -38,6 +40,8 @@ class Case:
 
         # Microphysics settings:
         self.scheme = 'KK00'
+        self.auto_tuning_prefac = auto_tuning_prefac
+        self.auto_exponent_KK = auto_exponent_KK
         self.nc      = nc        # Cloud droplet number
         self.sw_auto = sw_auto   # Enable/disable   autoconversion
         self.sw_evap = sw_evap     #    "     "       evaporation

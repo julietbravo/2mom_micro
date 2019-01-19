@@ -63,6 +63,9 @@ class Model:
 
         # Initialize the microphysics
         self.micro = Micro()
+        self.micro.scheme = case.scheme
+        self.micro.auto_tuning_prefac = case.auto_tuning_prefac
+        self.micro.auto_exponent_KK = case.auto_exponent_KK
         self.micro.nc    = case.nc
         self.micro.sw_auto = case.sw_auto
         self.micro.sw_evap = case.sw_evap
