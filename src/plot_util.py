@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pl
 from .tools import remove_top_right_axis
 from itertools import cycle
 
@@ -256,7 +256,7 @@ def plot_profile_evolution(cases, varname, plot_every=10):
     xlabel, fac = specs[varname]
 
     # Define unique colors based on the number of output times
-    cc = plt.cm.jet(np.linspace(0,1,cases[0].stat.var['t'].size))
+    cc = pl.cm.jet(np.linspace(0,1,cases[0].stat.var['t'].size))
 
     # Define line types
     lines = ['-', '--', '-.', ':']
@@ -265,7 +265,7 @@ def plot_profile_evolution(cases, varname, plot_every=10):
     # Vertical extent plot
     ymax = cases[0].grid.zsize
    
-    plt.figure(figsize=(3,5))
+    pl.figure(figsize=(3,5))
     remove_top_right_axis()
     
     times = []
@@ -275,18 +275,18 @@ def plot_profile_evolution(cases, varname, plot_every=10):
         for t in range(0, case.stat.var['t'].size, plot_every):
     #        pl.plot(case.stat.se_qr[t,:]*1e6*3600, case.stat.z, color=cc[t], linestyle=lt)
     #pl.xlabel('dqr/dt (mg kg-1 h-1)')
-            p, = plt.plot(case.stat.var[varname][t,:]*fac, case.stat.var['z'], color=cc[t], linestyle=lt)
+            p, = pl.plot(case.stat.var[varname][t,:]*fac, case.stat.var['z'], color=cc[t], linestyle=lt)
 
             if (ic == 0): times.append(p)
             if (t  == 0): names.append(p)
 
-    plt.legend(times, ['t={0:.0f} min'.format(cases[0].stat.var['t'][t]/60.) for t in range(0,cases[0].stat.var['t'].size,plot_every)], bbox_to_anchor=(1.05, 1))
-    plt.xlabel(xlabel)
-    plt.ylabel('height / m')
-    #plt.set_yticks([])
-    plt.ylim(0,ymax)
-    plt.savefig("profile_evolution_"+varname+".pdf", bbox_inches='tight')
-    plt.show()
+    pl.legend(times, ['t={0:.0f} min'.format(cases[0].stat.var['t'][t]/60.) for t in range(0,cases[0].stat.var['t'].size,plot_every)], bbox_to_anchor=(1.05, 1))
+    pl.xlabel(xlabel)
+    pl.ylabel('height / m')
+    #pl.set_yticks([])
+    pl.ylim(0,ymax)
+    pl.savefig("profile_evolution_"+varname+".pdf", bbox_inches='tight')
+    pl.show()
 
 def plot_profile_comparison(case, varnames):
     specs = {
@@ -307,24 +307,24 @@ def plot_profile_comparison(case, varnames):
     # Vertical extent plot
     ymax = case.grid.zsize
    
-    plt.figure(figsize=(3,5))
+    pl.figure(figsize=(3,5))
     remove_top_right_axis()
     
     for ic,varname in enumerate(varnames):
         assert varname in specs.keys()
         xlabel, unit, fac = specs[varname]
-        p, = plt.plot(case.stat.var[varname][0,:]*fac, case.stat.var['z'], label=xlabel)
+        p, = pl.plot(case.stat.var[varname][0,:]*fac, case.stat.var['z'], label=xlabel)
 
-    plt.legend(bbox_to_anchor=(1.05, 1))
-    plt.xlabel('variable / '+unit) 
-    plt.ylabel('height / m')
-    #plt.set_yticks([])
-    plt.ylim(0,ymax)
+    pl.legend(bbox_to_anchor=(1.05, 1))
+    pl.xlabel('variable / '+unit) 
+    pl.ylabel('height / m')
+    #pl.set_yticks([])
+    pl.ylim(0,ymax)
     varnamestring = ''
     for varname in varnames:
         varnamestring += varname
-    plt.savefig("initial_conditions_"+varnamestring+".pdf", bbox_inches='tight')
-    plt.show()
+    pl.savefig("initial_conditions_"+varnamestring+".pdf", bbox_inches='tight')
+    pl.show()
 
 
 def plot_initial_profiles(case):
@@ -350,7 +350,7 @@ def plot_timeseries(cases, varname):
     assert varname in specs.keys()
     ylabel, fac = specs[varname]
 
-    plt.figure(figsize=(5,3))
+    pl.figure(figsize=(5,3))
     remove_top_right_axis()
     
     for ic,case in enumerate(cases):
@@ -360,15 +360,15 @@ def plot_timeseries(cases, varname):
             cb_index = np.nonzero(case.stat.var['ql'])[0]
             
             rainrate = np.array([case.stat.var['rainrate'][t, np.nonzero(case.stat.var['ql'][t])[0][0]]*fac for t in range(len(case.stat.var['t']))]) if varname == 'cb_rain_rate' else case.stat.var['rainrate'][:,0]*fac
-            p, = plt.plot(case.stat.var['t'] / 60., rainrate, label=case.name + ', tot = %.2f mm' % np.sum(rainrate * case.stat.sampletime/3600.) )
+            p, = pl.plot(case.stat.var['t'] / 60., rainrate, label=case.name + ', tot = %.2f mm' % np.sum(rainrate * case.stat.sampletime/3600.) )
         elif varname == 'processes':
-            p, = plt.plot(case.stat.var['t'] / 60., np.amax(case.stat.var['ac_qr'], axis=1)*fac, label=case.name)
-            p, = plt.plot(case.stat.var['t'] / 60., np.amax(case.stat.var['au_qr'], axis=1)*fac, label=case.name)
+            p, = pl.plot(case.stat.var['t'] / 60., np.amax(case.stat.var['ac_qr'], axis=1)*fac, label=case.name)
+            p, = pl.plot(case.stat.var['t'] / 60., np.amax(case.stat.var['au_qr'], axis=1)*fac, label=case.name)
         else:
-            p, = plt.plot(case.stat.var['t'] / 60., np.amax(np.abs(case.stat.var[varname]), axis=1)*fac, label=case.name)
+            p, = pl.plot(case.stat.var['t'] / 60., np.amax(np.abs(case.stat.var[varname]), axis=1)*fac, label=case.name)
 
-    plt.xlabel('time / min')
-    plt.ylabel(ylabel)
-    plt.legend(bbox_to_anchor=(1.05, 1))
-    plt.savefig("timeseries_"+varname+".pdf", bbox_inches='tight')
-    plt.show()
+    pl.xlabel('time / min')
+    pl.ylabel(ylabel)
+    pl.legend(bbox_to_anchor=(1.05, 1))
+    pl.savefig("timeseries_"+varname+".pdf", bbox_inches='tight')
+    pl.show()
